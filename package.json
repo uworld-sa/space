@@ -1,7 +1,15 @@
 {
   "name": "space",
   "version": "0.1.0",
+  "description": "Problem n-body",
   "private": true,
+  "author": "Sergey Temnenko <uworld.sa@gmail.com> (https://github.com/uworld-sa)",
+  "license": "MIT",
+  "homepage": "https://space-program-uw.herokuapp.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/uworld-sa/space"
+  },
   "dependencies": {
     "dis-gui": "^2.1.0",
     "react": "^16.8.6",
