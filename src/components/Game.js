@@ -5,7 +5,7 @@ import throttle from 'lodash/throttle'
 import spaceSystem from './spaceSystem'
 import './Game.css'
 import Gui from './Gui.js'
-import example from '../example/example2'
+import example from '../example/example'
 
 const OrbitControls = OrbitControlsLib(THREE);
 
