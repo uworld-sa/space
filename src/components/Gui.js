@@ -9,6 +9,7 @@ export default class Gui extends Component {
         super(props);
         this.handleUpdate = this.handleUpdate.bind(this);
         this.handleUpdateObject = this.handleUpdateObject.bind(this);
+        this.handleUpdateObjectPos = this.handleUpdateObjectPos.bind(this);
     }
 
     hexToRgb(hex) {
@@ -32,6 +33,13 @@ export default class Gui extends Component {
         } else {
             params.objects[ind][key] = value;
         }
+        this.props.onGuiChange(params);
+    }
+
+    handleUpdateObjectPos(value,key,ind) {
+        let params = Object.assign({}, this.props.params);
+        params.objects[ind][key] = value;
+        params.objects[ind].three.position[key] = value;
         this.props.onGuiChange(params);
     }
 
@@ -116,26 +124,41 @@ export default class Gui extends Component {
                                 />
                             ) : ('')
                         }
-                        {/*
+                        {
                             !params.play ? (
                                 <dg.Folder key={i} label={'Позиция и скорость'} expanded={false}>
                                     <dg.Number
                                         label='Позиция x'
-                                        value={object.x}
-                                        onChange={ (value) => this.handleUpdateObject(value,'x',i)}
+                                        value={object.three.position.x}
+                                        onChange={ (value) => this.handleUpdateObjectPos(value,'x',i)}
                                     />
                                     <dg.Number
                                         label='Позиция y'
-                                        value={object.y}
-                                        onChange={ (value) => this.handleUpdateObject(value,'y',i)}
+                                        value={object.three.position.y}
+                                        onChange={ (value) => this.handleUpdateObjectPos(value,'y',i)}
                                     />
                                     <dg.Number
                                         label='Позиция z'
-                                        value={object.z}
-                                        onChange={ (value) => this.handleUpdateObject(value,'z',i)}
+                                        value={object.three.position.z}
+                                        onChange={ (value) => this.handleUpdateObjectPos(value,'z',i)}
+                                    />
+                                    <dg.Number
+                                        label='vx'
+                                        value={object.vx}
+                                        onChange={ (value) => this.handleUpdateObject(value,'vx',i)}
+                                    />
+                                    <dg.Number
+                                        label='vy'
+                                        value={object.vy}
+                                        onChange={ (value) => this.handleUpdateObject(value,'vy',i)}
+                                    />
+                                    <dg.Number
+                                        label='vz'
+                                        value={object.vz}
+                                        onChange={ (value) => this.handleUpdateObject(value,'vz',i)}
                                     />
                                 </dg.Folder>
-                            ) : ('')*/
+                            ) : ('')
 
                         }
                     </dg.Folder>);

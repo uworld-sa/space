@@ -25,7 +25,7 @@ export default class Game extends Component {
     }
 
     onGuiChange = data => {
-        if (this.state.play !== data.play) {
+        /*if (this.state.play !== data.play) {
             console.log(this.frameId);
             if (data.play) {
                 this.start();
@@ -34,10 +34,13 @@ export default class Game extends Component {
                 this.stop();
                 console.log('stop');
             }
-        }
+        }*/
+        console.log(data);
         this.setState({
             params:data
         });
+        console.log(this.state);
+        this.renderScene();
         this.space.updateSpace(data);
         this.updateArea(data);
     }
@@ -89,7 +92,11 @@ export default class Game extends Component {
     };
 
     animate = () => {
-        this.space.calculateMotions();
+        //console.log(this.state.play);
+        if (this.state.params.play) {
+            console.log('123');
+            this.space.calculateMotions();
+        }
         this.renderScene();
         this.frameId = requestAnimationFrame(this.animate);
     };
