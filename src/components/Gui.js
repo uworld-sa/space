@@ -59,8 +59,8 @@ export default class Gui extends Component {
                 />
                 <dg.Number
                     label='Размер космоса'
-                    value={params.sizeArea}
-                    onChange={ (value) => this.handleUpdate(value,'sizeArea')}
+                    value={params.far}
+                    onChange={ (value) => this.handleUpdate(value,'far')}
                 />
                 <dg.Number
                     label='Размер сетки'
@@ -94,24 +94,50 @@ export default class Gui extends Component {
                             step={1}
                             onChange={ (value) => this.handleUpdateObject(value,'needResize',i)}
                         />
-                        <dg.Color
-                        label = 'Color'
-                        expanded = {
-                            false
+                        {
+                            object.texture === undefined ? (
+                                <dg.Color
+                                label = 'Color'
+                                expanded = {
+                                    false
+                                }
+                                red = {
+                                    colors[i].r
+                                }
+                                green = {
+                                    colors[i].g
+                                }
+                                blue = {
+                                    colors[i].b
+                                }
+                                onFinishChange = {
+                                    (value) => this.handleUpdateObject(value, 'color', i)
+                                }
+                                />
+                            ) : ('')
                         }
-                        red = {
-                            colors[i].r
+                        {/*
+                            !params.play ? (
+                                <dg.Folder key={i} label={'Позиция и скорость'} expanded={false}>
+                                    <dg.Number
+                                        label='Позиция x'
+                                        value={object.x}
+                                        onChange={ (value) => this.handleUpdateObject(value,'x',i)}
+                                    />
+                                    <dg.Number
+                                        label='Позиция y'
+                                        value={object.y}
+                                        onChange={ (value) => this.handleUpdateObject(value,'y',i)}
+                                    />
+                                    <dg.Number
+                                        label='Позиция z'
+                                        value={object.z}
+                                        onChange={ (value) => this.handleUpdateObject(value,'z',i)}
+                                    />
+                                </dg.Folder>
+                            ) : ('')*/
+
                         }
-                        green = {
-                            colors[i].g
-                        }
-                        blue = {
-                            colors[i].b
-                        }
-                        onFinishChange = {
-                            (value) => this.handleUpdateObject(value, 'color', i)
-                        }
-                        />
                     </dg.Folder>);
                 }
                 )}

@@ -47,7 +47,7 @@ export default class Game extends Component {
             height = this.container.clientHeight;
 
         this.scene = new THREE.Scene();
-        this.camera = new THREE.PerspectiveCamera(75, width / height, 0.1, this.state.params.sizeArea);
+        this.camera = new THREE.PerspectiveCamera(75, width / height, this.state.params.near, this.state.params.far);
         this.camera.position.x = this.state.params.camera.x;
         this.camera.position.y = this.state.params.camera.y;
         this.camera.position.z = this.state.params.camera.z;
@@ -71,8 +71,8 @@ export default class Game extends Component {
     }
 
     updateArea(data) {
-        if (this.camera.far !== data.sizeArea) {
-            this.camera.far = data.sizeArea;
+        if (this.camera.far !== data.far) {
+            this.camera.far = data.far;
             this.camera.updateProjectionMatrix();
         }
     }
@@ -90,8 +90,6 @@ export default class Game extends Component {
 
     animate = () => {
         this.space.calculateMotions();
-        this.count++;
-        
         this.renderScene();
         this.frameId = requestAnimationFrame(this.animate);
     };

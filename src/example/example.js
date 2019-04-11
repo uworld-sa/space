@@ -2,7 +2,8 @@
 let example = {
     G: 6.67408e-11 / 1000,
     dt:1,
-    sizeArea: 3000000000,
+    near: 100,
+    far: 3000000000,
     divisions: 10,
     camera: {
         x:0,

@@ -4,7 +4,7 @@ export default class spaceSystem {
     constructor(scene, camera, renderer, params) {
         this.G = params.G; // gravitational constant
         this.dt = params.dt; //0.005 years is equal to 1.825 days
-        this.grid = params.sizeArea;
+        this.grid = params.far;
         this.divisions = params.divisions
         this.scene = scene;
         this.camera = camera;
@@ -27,7 +27,7 @@ export default class spaceSystem {
             star.x = Math.random() * 2 - 1;
             star.y = Math.random() * 2 - 1;
             star.z = Math.random() * 2 - 1;
-            star.multiplyScalar(this.params.sizeArea / 2);
+            star.multiplyScalar(this.params.far / 2);
             starsGeometry.vertices.push(star);
         }
 
@@ -47,7 +47,11 @@ export default class spaceSystem {
             this.game[ind].geometry = new THREE.SphereGeometry(this.game[ind].radius * this.game[ind].needResize, 40, 40);
             if (this.game[ind].texture !== undefined) {
                 let texture = new THREE.TextureLoader().load( this.game[ind].texture );
-                this.game[ind].material = new THREE.MeshBasicMaterial( { map: texture }  );
+                this.game[ind].material = new THREE.MeshBasicMaterial({
+                    map: texture,
+                    side: THREE.FrontSide,
+                    transparent: true
+                });
             } else {
                 this.game[ind].material = new THREE.MeshBasicMaterial({
                     color: this.game[ind].color
@@ -64,10 +68,10 @@ export default class spaceSystem {
 
     updateSpace(params) {
         this.dt = params.dt;
-        if (this.gridHelper.userData.grid !== params.sizeArea || this.gridHelper.userData.divisions !== params.divisions) {
+        if (this.gridHelper.userData.grid !== params.far || this.gridHelper.userData.divisions !== params.divisions) {
             this.scene.remove(this.gridHelper);
-            this.gridHelper = new THREE.GridHelper(params.sizeArea, params.divisions);
-            this.gridHelper.userData = {grid:params.sizeArea,divisions:params.divisions};
+            this.gridHelper = new THREE.GridHelper(params.far, params.divisions);
+            this.gridHelper.userData = {grid:params.far,divisions:params.divisions};
             this.scene.add( this.gridHelper );
         }
         this.gridHelper.visible = params.showGrid;
