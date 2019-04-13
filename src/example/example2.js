@@ -1,6 +1,7 @@
 let example = {
+    name: "Random move",
     G: 6.67408e-11 ,
-    dt:0.005,
+    dt:0.001,
     near: 100,
     far: 30000000,
     divisions: 10,

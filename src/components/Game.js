@@ -5,7 +5,8 @@ import throttle from 'lodash/throttle'
 import spaceSystem from './spaceSystem'
 import './Game.css'
 import Gui from './Gui.js'
-import example from '../example/example2'
+import example from '../example/example'
+import example2 from '../example/example2'
 
 const OrbitControls = OrbitControlsLib(THREE);
 
@@ -52,6 +53,41 @@ export default class Game extends Component {
 
     }
 
+    changeExample(e,data) {
+        e.preventDefault();
+        let params = this.state.params;
+        params.play = false;
+        this.setState({
+            params
+        });
+        while(this.scene.children.length > 0){
+            this.scene.remove(this.scene.children[0]);
+        }
+
+        params = Object.assign({}, data);
+        console.log(params);
+        params.play = true;
+
+        this.space = undefined;
+        this.space = new spaceSystem(this.scene, this.camera, this.renderer, params);
+        //console.log(this.space);
+        this.space.initMiniStars();
+        this.space.initObjects();
+        this.camera.position.x = params.camera.x;
+        this.camera.position.y = params.camera.y;
+        this.camera.position.z = params.camera.z;
+        this.camera.far = params.far;
+        this.camera.near = params.near;
+        this.setState({
+            params
+        });
+        console.log(data);
+        console.log(params);
+        //this.space.updateSpace(data);
+        //this.updateArea(params);
+        //this.start();
+    }
+
     onGuiChange = data => {
         /*if (this.state.play !== data.play) {
             console.log(this.frameId);
@@ -94,14 +130,11 @@ export default class Game extends Component {
         if (this.state.params.play) {
             let impact = this.space.checkImpact();
             if (impact) {
-                //console.log(this.state.params);
-                //console.log(impact);
                 let state = this.state.params;
                 state.objects = impact;
                 this.setState({
                     params: state
                 });
-                //console.log(this.state.params);
                 this.space.updateSpace(state);
             }
             this.space.calculateMotions();
@@ -134,6 +167,10 @@ export default class Game extends Component {
         } = this.state;
         return (
             <div className = 'threejs-app' >
+                {/*<div className="example">
+                    <a href="/" onClick={(e) => this.changeExample(e,example)}>Mini solar</a>
+                    <a href="/" onClick={(e) => this.changeExample(e,example2)}>Random</a>
+                </div>*/}
                 <div className = 'scene'
                     ref = {
                         container => this.container = container

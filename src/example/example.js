@@ -1,5 +1,6 @@
 // based on https://ssd.jpl.nasa.gov/horizons.cgi?s_target=1#top 
 let example = {
+    name: "Mini solar",
     G: 6.67408e-11 / 1000,
     dt:1,
     near: 100,
