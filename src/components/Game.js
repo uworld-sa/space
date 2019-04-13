@@ -5,7 +5,7 @@ import throttle from 'lodash/throttle'
 import spaceSystem from './spaceSystem'
 import './Game.css'
 import Gui from './Gui.js'
-import example from '../example/example'
+import example from '../example/example2'
 
 const OrbitControls = OrbitControlsLib(THREE);
 
@@ -22,27 +22,6 @@ export default class Game extends Component {
        
         this.resizeWindow = throttle(this.resizeWindow, 300);
         this.space = {}
-    }
-
-    onGuiChange = data => {
-        /*if (this.state.play !== data.play) {
-            console.log(this.frameId);
-            if (data.play) {
-                this.start();
-                console.log('start');
-            } else {
-                this.stop();
-                console.log('stop');
-            }
-        }*/
-        console.log(data);
-        this.setState({
-            params:data
-        });
-        console.log(this.state);
-        this.renderScene();
-        this.space.updateSpace(data);
-        this.updateArea(data);
     }
 
     componentDidMount() {
@@ -73,6 +52,25 @@ export default class Game extends Component {
 
     }
 
+    onGuiChange = data => {
+        /*if (this.state.play !== data.play) {
+            console.log(this.frameId);
+            if (data.play) {
+                this.start();
+                console.log('start');
+            } else {
+                this.stop();
+                console.log('stop');
+            }
+        }*/
+        this.setState({
+            params:data
+        });
+        this.renderScene();
+        this.space.updateSpace(data);
+        this.updateArea(data);
+    }
+
     updateArea(data) {
         if (this.camera.far !== data.far) {
             this.camera.far = data.far;
@@ -94,7 +92,18 @@ export default class Game extends Component {
     animate = () => {
         //console.log(this.state.play);
         if (this.state.params.play) {
-            console.log('123');
+            let impact = this.space.checkImpact();
+            if (impact) {
+                //console.log(this.state.params);
+                //console.log(impact);
+                let state = this.state.params;
+                state.objects = impact;
+                this.setState({
+                    params: state
+                });
+                //console.log(this.state.params);
+                this.space.updateSpace(state);
+            }
             this.space.calculateMotions();
         }
         this.renderScene();

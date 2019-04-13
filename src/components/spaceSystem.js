@@ -9,9 +9,11 @@ export default class spaceSystem {
         this.scene = scene;
         this.camera = camera;
         this.renderer = renderer;
-        this.game = Object.assign({}, params.objects);
+        this.game = [];
+        //this.game = Object.assign({}, params.objects);
         this.params = params;
         this.gridHelper = {};
+        this.game = [...params.objects]
     }
 
     initMiniStars() {
@@ -99,6 +101,41 @@ export default class spaceSystem {
     calculateFz(obj, obj2) {
         let R = obj.three.position.distanceTo(obj2.three.position); // sqrt(pow((x1-x2),2) + pow((y1-y2),2) + pow((z1-z2),2))
         return this.G * obj2.weight / Math.pow(R, 3) * (obj2.three.position.z - obj.three.position.z);
+    }
+
+    checkImpact() {
+        //TODO find more interesting solution
+        let impact = false;
+        for (let ind in this.game) {
+            for (let ind2 in this.game) {
+                if (ind !== ind2 ) {
+                    if (this.game[ind2] !== undefined && this.game[ind] !== undefined) {
+                        let R = this.game[ind].three.position.distanceTo(this.game[ind2].three.position);
+                        let size = this.game[ind].radius + this.game[ind2].radius;
+                        if (R < size) {
+                            this.game[ind].weight = this.game[ind].weight + this.game[ind2].weight;
+                            this.game[ind].radius = this.game[ind].radius * 1.5;
+                            this.game[ind].vx = (this.game[ind].weight * this.game[ind].vx + this.game[ind2].weight * this.game[ind2].vx)/(this.game[ind].weight + this.game[ind2].weight);
+                            this.game[ind].vy = (this.game[ind].weight * this.game[ind].vy + this.game[ind2].weight * this.game[ind2].vy)/(this.game[ind].weight + this.game[ind2].weight);
+                            this.game[ind].vz = (this.game[ind].weight * this.game[ind].vz + this.game[ind2].weight * this.game[ind2].vz)/(this.game[ind].weight + this.game[ind2].weight);
+                            this.scene.remove(this.game[ind2].three);
+                            this.game[ind2] = undefined;
+                            impact = true;
+                        }
+                    }
+                }
+            }
+        }
+        for (let ind in this.game) {
+            if (this.game[ind] === undefined) {
+                delete this.game[ind];
+            }
+        }
+        if (impact) {
+            return this.game;
+        } else {
+            return false;
+        }
     }
 
     calculateMotions() {
